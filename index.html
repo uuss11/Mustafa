@@ -101,36 +101,36 @@
         }
 
         .vcard {
-            width: 400px;
-            background: rgba(26, 0, 51, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(139, 0, 255, 0.2);
-            border-radius: 24px;
-            padding: 120px 30px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
-                        0 0 30px rgba(139, 0, 255, 0.1),
-                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform var(--transition-speed-slow) ease-out;
-            opacity: 0;
-            transform: translateY(40px) rotateX(-10deg);
-            animation: card-appear 1s ease-out forwards 0.5s;
-            overflow: hidden;
-        }
+    width: 400px;
+    background: rgba(26, 0, 51, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 0, 255, 0.2);
+    border-radius: 24px;
+    padding: 160px 30px 40px; /* زودنا المسافة العلوية حتى الصورة تبين */
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                0 0 30px rgba(139, 0, 255, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform var(--transition-speed-slow) ease-out;
+    opacity: 0;
+    transform: translateY(40px) rotateX(-10deg);
+    animation: card-appear 1s ease-out forwards 0.5s;
+    overflow: visible; /* حتى ما ينقص الجزء العلوي من الصورة */
+}
 
-        .vcard::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(139, 0, 255, 0.1) 0%, transparent 70%);
-            transform: rotate(30deg);
-            z-index: -1;
-        }
+.vcard::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(139, 0, 255, 0.1) 0%, transparent 70%);
+    transform: rotate(30deg);
+    z-index: -1;
+}
 
         @keyframes card-appear {
             to {
@@ -165,7 +165,7 @@
         .profile-picture-wrapper {
             width: 150px;
             height: 150px;
-            margin: -75px auto 20px;
+            margin: -100px auto 20px;
             border-radius: 50%;
             padding: 6px;
             background: linear-gradient(45deg, var(--color-light-purple), var(--color-accent));
@@ -382,7 +382,7 @@
             </footer>
             
             <div class="signature">
-                كل الحقوق محفوظة | مصطفى 2025©
+                مصمم بمهارة 100 سنة خبرة
             </div>
         </section>
     </main>
