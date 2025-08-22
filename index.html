@@ -5,34 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الموقع الشخصي | مصطفى</title>
     
-    <!-- Google Fonts: Cairo for a professional Arabic look -->
+    <!-- Google Fonts: Cairo & Tajawal -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome 6 for modern icons -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- Typed.js for the dynamic text effect -->
+    <!-- Typed.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js" defer></script>
 
     <style>
-        /* --- CSS Variables for Professional Theming --- */
         :root {
-            --color-dark-purple: #10001c;
-            --color-mid-purple: #2c0b4d;
-            --color-light-purple: #4f228a;
-            --color-bright-green: #00ffc3;
+            --color-dark-purple: #1a0033;
+            --color-mid-purple: #4c1a75;
+            --color-light-purple: #8a2be2;
+            --color-accent: #d8bfd8;
+            --color-black: #0a0014;
             --color-white: #f0f0f0;
             --color-grey: #a0a0c0;
-            --color-shadow: rgba(0, 255, 195, 0.15 );
-
-            --font-family-main: 'Cairo', sans-serif;
+            --color-shadow: rgba(139, 0, 255, 0.2);
+            --font-family-main: 'Tajawal', 'Cairo', sans-serif;
             --transition-speed-fast: 0.2s;
             --transition-speed-slow: 0.5s;
         }
 
-        /* --- Base & Reset --- */
         * {
             margin: 0;
             padding: 0;
@@ -41,12 +39,13 @@
 
         html {
             font-size: 16px;
+            scroll-behavior: smooth;
         }
 
         body {
             font-family: var(--font-family-main);
             color: var(--color-white);
-            background-color: var(--color-dark-purple);
+            background-color: var(--color-black);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -55,7 +54,6 @@
             position: relative;
         }
 
-        /* --- Animated Gradient Background --- */
         #gradient-canvas {
             position: absolute;
             top: 0;
@@ -63,32 +61,75 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            --gradient-color-1: var(--color-dark-purple);
-            --gradient-color-2: var(--color-mid-purple);
-            --gradient-color-3: var(--color-light-purple);
-            --gradient-color-4: var(--color-bright-green);
+            --gradient-color-1: var(--color-black);
+            --gradient-color-2: var(--color-dark-purple);
+            --gradient-color-3: var(--color-mid-purple);
+            --gradient-color-4: var(--color-light-purple);
         }
 
-        /* --- Main vCard Container --- */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--color-light-purple);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100vw) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         .vcard-container {
-            perspective: 1500px; /* For 3D effect */
+            perspective: 1500px;
         }
 
         .vcard {
-            width: 380px;
-            background: rgba(26, 26, 46, 0.6); /* Semi-transparent background */
+            width: 400px;
+            background: rgba(26, 0, 51, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(139, 0, 255, 0.2);
             border-radius: 24px;
-            padding: 40px;
+            padding: 40px 30px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                        0 0 30px rgba(139, 0, 255, 0.1),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
             position: relative;
             transform-style: preserve-3d;
             transition: transform var(--transition-speed-slow) ease-out;
             opacity: 0;
             transform: translateY(40px) rotateX(-10deg);
             animation: card-appear 1s ease-out forwards 0.5s;
+            overflow: hidden;
+        }
+
+        .vcard::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 0, 255, 0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            z-index: -1;
         }
 
         @keyframes card-appear {
@@ -98,7 +139,6 @@
             }
         }
 
-        /* --- Interactive Spotlight Effect --- */
         .vcard::before {
             content: '';
             position: absolute;
@@ -109,6 +149,389 @@
             border-radius: 24px;
             background: radial-gradient(
                 circle at var(--mouse-x) var(--mouse-y),
+                rgba(139, 0, 255, 0.15),
+                rgba(139, 0, 255, 0) 25%
+            );
+            opacity: 0;
+            transition: opacity var(--transition-speed-slow) ease;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .vcard:hover::before {
+            opacity: 1;
+        }
+
+        .profile-picture-wrapper {
+            width: 150px;
+            height: 150px;
+            margin: -95px auto 20px;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(45deg, var(--color-light-purple), var(--color-accent));
+            box-shadow: 0 10px 30px var(--color-shadow);
+            transition: transform var(--transition-speed-slow) ease;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .vcard:hover .profile-picture-wrapper {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--color-dark-purple);
+        }
+
+        .user-info {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .user-info .name {
+            font-size: 2.25rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--color-white);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--color-accent), var(--color-white));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .user-info .title {
+            font-size: 1.1rem;
+            color: var(--color-accent);
+            min-height: 30px;
+            font-weight: 700;
+        }
+
+        .user-info .title .typed-cursor {
+            color: var(--color-accent);
+        }
+
+        .social-links {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(139, 0, 255, 0.1);
+            color: var(--color-accent);
+            font-size: 1.5rem;
+            transition: all var(--transition-speed-fast) ease;
+            border: 1px solid rgba(139, 0, 255, 0.3);
+        }
+
+        .social-links a:hover {
+            color: var(--color-white);
+            background: var(--color-light-purple);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 5px 15px var(--color-shadow);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--color-white);
+            background-color: rgba(139, 0, 255, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all var(--transition-speed-fast) ease;
+            border: 1px solid rgba(139, 0, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition-speed-slow);
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--color-light-purple);
+            color: var(--color-accent);
+            background: rgba(139, 0, 255, 0.2);
+        }
+
+        .action-btn.primary {
+            background-color: var(--color-light-purple);
+            color: var(--color-white);
+        }
+        
+        .action-btn.primary:hover {
+            background-color: var(--color-mid-purple);
+            border-color: var(--color-accent);
+        }
+
+        .action-btn i {
+            font-size: 1.2rem;
+            transition: transform var(--transition-speed-fast) ease;
+        }
+        
+        .action-btn:hover i {
+            transform: scale(1.2);
+        }
+
+        .signature {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--color-grey);
+            opacity: 0.7;
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .vcard {
+                width: 90%;
+                padding: 30px 20px;
+            }
+            
+            .user-info .name {
+                font-size: 1.8rem;
+            }
+            
+            .profile-picture-wrapper {
+                width: 120px;
+                height: 120px;
+                margin: -75px auto 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gradient-canvas"></canvas>
+    
+    <div class="particles" id="particles"></div>
+
+    <main class="vcard-container">
+        <section class="vcard">
+            <figure class="profile-picture-wrapper">
+                <img class="profile-picture" src="https://files.catbox.moe/e1dryd.jpg" alt="صورة شخصية لمصطفى">
+            </figure>
+
+            <header class="user-info">
+                <h1 class="name">مصطفى | 𝑴𝒖𝒔𝒕𝒂𝒇𝒂 🔮</h1>
+                <p class="title"><span id="typed-title"></span></p>
+            </header>
+
+            <nav class="social-links">
+                <a href="https://t.me/Q911O" target="_blank" title="تليجرام">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="https://www.instagram.com/senzo.edit?igsh=MTd6bzE1bTAyYTdsMQ==" target="_blank" title="انستجرام">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@es8n?_t=ZS-8z4oc7pKsbM&_r=1" target="_blank" title="تيك توك">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </nav>
+
+            <footer class="action-buttons">
+                <a class="action-btn primary" href="https://t.me/Q911O" target="_blank">
+                    <i class="fas fa-user-circle"></i>
+                    <span>حسابي الشخصي</span>
+                </a>
+                <a class="action-btn" href="https://t.me/esb8g" target="_blank">
+                    <i class="fas fa-satellite-dish"></i>
+                    <span>قناتي على تليجرام</span>
+                </a>
+            </footer>
+            
+            <div class="signature">
+                مصمم بمهارة 100 سنة خبرة
+            </div>
+        </section>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- Typed.js Initialization ---
+        if (typeof Typed !== 'undefined') {
+            new Typed("#typed-title", {
+                strings: [
+                    "مصمم فيديوهات وافتارات محترف",
+                    "مطور واجهات مستخدم مبدع",
+                    "مصمم جرافيك محترف"
+                ],
+                typeSpeed: 60,
+                backSpeed: 30,
+                backDelay: 2500,
+                startDelay: 1000,
+                loop: true,
+                smartBackspace: true,
+            });
+        }
+
+        // --- Interactive Card Effects ---
+        const vcard = document.querySelector('.vcard');
+        if (vcard) {
+            vcard.addEventListener('mousemove', (e) => {
+                const rect = vcard.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+
+                vcard.style.setProperty('--mouse-x', `${x}px`);
+                vcard.style.setProperty('--mouse-y', `${y}px`);
+                vcard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            vcard.addEventListener('mouseleave', () => {
+                vcard.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+        }
+
+        // --- Advanced Animated Gradient Background ---
+        const canvas = document.getElementById('gradient-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            const gradient = new Gradient();
+
+            function setup() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                ctx.clearRect(0, 0, width, height);
+            }
+
+            function draw() {
+                gradient.connect(ctx);
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', setup);
+            setup();
+            draw();
+        }
+        
+        // --- Create floating particles ---
+        const particlesContainer = document.getElementById('particles');
+        if (particlesContainer) {
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 3px and 8px
+                const size = Math.random() * 5 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+    });
+
+    // Gradient animation class
+    function Gradient() {
+        this.colors = [
+            [26, 0, 51], [76, 26, 117], [138, 43, 226], [139, 0, 255]
+        ];
+        this.step = 0;
+        this.colorIndices = [0, 1, 2, 3];
+        this.gradientSpeed = 0.002;
+
+        this.updateGradient = () => {
+            if (this.step >= 1) {
+                this.step = 0;
+                this.colorIndices[0] = this.colorIndices[1];
+                this.colorIndices[2] = this.colorIndices[3];
+                this.colorIndices[1] = (this.colorIndices[0] + Math.floor(1 + Math.random() * (this.colors.length - 1))) % this.colors.length;
+                this.colorIndices[3] = (this.colorIndices[2] + Math.floor(1 + Math.random() * (this.colors.length - 1))) % this.colors.length;
+            }
+
+            this.step += this.gradientSpeed;
+            const t = this.step;
+
+            const color1 = this.colors[this.colorIndices[0]];
+            const color2 = this.colors[this.colorIndices[1]];
+            const color3 = this.colors[this.colorIndices[2]];
+            const color4 = this.colors[this.colorIndices[3]];
+
+            const r1 = Math.round(color1[0] * (1 - t) + color2[0] * t);
+            const g1 = Math.round(color1[1] * (1 - t) + color2[1] * t);
+            const b1 = Math.round(color1[2] * (1 - t) + color2[2] * t);
+            const c1 = `rgb(${r1}, ${g1}, ${b1})`;
+
+            const r2 = Math.round(color3[0] * (1 - t) + color4[0] * t);
+            const g2 = Math.round(color3[1] * (1 - t) + color4[1] * t);
+            const b2 = Math.round(color3[2] * (1 - t) + color4[2] * t);
+            const c2 = `rgb(${r2}, ${g2}, ${b2})`;
+
+            return [c1, c2];
+        };
+
+        this.connect = (context) => {
+            const [c1, c2] = this.updateGradient();
+            const grad = context.createLinearGradient(0, 0, window.innerWidth, window.innerHeight);
+            grad.addColorStop(0, c1);
+            grad.addColorStop(1, c2);
+            context.fillStyle = grad;
+            context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        };
+    }
+    </script>
+
+</body>
+</html>                circle at var(--mouse-x) var(--mouse-y),
                 rgba(255, 255, 255, 0.1),
                 rgba(255, 255, 255, 0) 25%
             );
