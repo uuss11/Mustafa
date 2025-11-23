@@ -56,29 +56,6 @@
             z-index: -2;
         }
 
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            background-color: var(--color-light-purple);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite linear;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
-            100% { transform: translateY(-100vh) translateX(100vw) rotate(360deg); opacity: 0; }
-        }
-
         .sparkles {
             position: fixed;
             top: 0;
@@ -87,6 +64,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
+            display: none; /* مخفي بشكل افتراضي */
         }
 
         .sparkle {
@@ -527,6 +505,63 @@
             font-size: 1.2rem;
         }
 
+        /* خيار التحكم بالشرارات */
+        .effects-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .effects-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .effects-toggle.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--color-accent);
+        }
+
+        .toggle-label {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--color-white);
+            border-radius: 50%;
+            top: 2px;
+            right: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .effects-toggle.active .toggle-switch {
+            background: var(--color-accent);
+        }
+
+        .effects-toggle.active .toggle-switch::after {
+            right: 28px;
+        }
+
         @media (max-width: 350px) {
             .vcard { padding: 110px 15px 20px; }
             .profile-picture-wrapper { width: 110px; height: 110px; margin: -80px auto 15px; }
@@ -537,8 +572,6 @@
 <body>
 
     <canvas id="gradient-canvas"></canvas>
-    
-    <div class="particles" id="particles"></div>
     
     <div class="sparkles" id="sparkles"></div>
 
@@ -554,6 +587,12 @@
         <div class="menu-header">
             <h2 class="menu-title">اختيار الألوان</h2>
             <button class="close-menu" id="closeMenu">×</button>
+        </div>
+        
+        <!-- خيار التحكم بالشرارات -->
+        <div class="effects-toggle" id="sparklesToggle">
+            <span class="toggle-label">تفعيل الشرار</span>
+            <div class="toggle-switch"></div>
         </div>
         
         <div class="color-category">
@@ -673,27 +712,15 @@
             draw();
         }
         
-        // --- Create floating particles ---
-        const particlesContainer = document.getElementById('particles');
-        if (particlesContainer) {
-            for (let i = 0; i < 25; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                const size = Math.random() * 5 + 3;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.top = `${Math.random() * 100}vh`;
-                particle.style.animationDelay = `${Math.random() * 15}s`;
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
         // --- Create Sparkles ---
         const sparklesContainer = document.getElementById('sparkles');
         let sparkles = [];
         
         function createSparkles() {
+            // إزالة الشرارات القديمة إن وجدت
+            sparklesContainer.innerHTML = '';
+            sparkles = [];
+            
             for (let i = 0; i < 15; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.classList.add('sparkle');
@@ -714,40 +741,40 @@
             }, 3000);
         }
         
-        createSparkles();
-        
         // --- Color Menu Functionality ---
         const menuToggle = document.getElementById('menuToggle');
         const colorMenu = document.getElementById('colorMenu');
         const closeMenu = document.getElementById('closeMenu');
         const themeColorsContainer = document.getElementById('themeColors');
         const sparkleColorsContainer = document.getElementById('sparkleColors');
+        const sparklesToggle = document.getElementById('sparklesToggle');
         
         // تعريف الألوان
         const themeColors = [
             { name: "اللون الأساسي", gradient: "linear-gradient(135deg, #0a1f33, #1a3f75, #8a2be2)" },
+            { name: "أزرق فاتح وداكن متدرج", gradient: "linear-gradient(135deg, #87cefa, #00008b)" },
+            { name: "أزرق واسود متدرج", gradient: "linear-gradient(135deg, #1e90ff, #000000)" },
+            { name: "سماوي واخضر متدرج", gradient: "linear-gradient(135deg, #87ceeb, #32cd32)" },
+            { name: "اخضر واصفر متدرج", gradient: "linear-gradient(135deg, #32cd32, #ffd700)" },
             { name: "أصفر وبرتقالي متدرج", gradient: "linear-gradient(135deg, #ffd700, #ff8c00)" },
             { name: "أصفر واحمر متدرج", gradient: "linear-gradient(135deg, #ffd700, #ff4500)" },
             { name: "احمر وازرق متدرج", gradient: "linear-gradient(135deg, #ff4500, #1e90ff)" },
-            { name: "سماوي واخضر متدرج", gradient: "linear-gradient(135deg, #87ceeb, #32cd32)" },
-            { name: "ازرق واسود متدرج", gradient: "linear-gradient(135deg, #1e90ff, #000000)" },
-            { name: "رصاصي واسود متدرج", gradient: "linear-gradient(135deg, #808080, #000000)" },
-            { name: "اخضر واصفر متدرج", gradient: "linear-gradient(135deg, #32cd32, #ffd700)" },
             { name: "أرجواني ووردي متدرج", gradient: "linear-gradient(135deg, #8a2be2, #ff69b4)" },
-            { name: "أزرق فاتح وداكن متدرج", gradient: "linear-gradient(135deg, #87cefa, #00008b)" }
+            { name: "رصاصي واسود متدرج", gradient: "linear-gradient(135deg, #808080, #000000)" }
         ];
         
         const sparkleColors = [
             { name: "اللون الأساسي", color: "#a8d8f0" },
-            { name: "أسود مضيء", color: "#000000" },
+            { name: "أبيض مضيء", color: "#ffffff" },
             { name: "أخضر مضيء", color: "#32cd32" },
-            { name: "أحمر مضيء", color: "#ff4500" },
-            { name: "أزرق مضيء", color: "#1e90ff" },
             { name: "أصفر مضيء", color: "#ffd700" },
-            { name: "وردي مضيء", color: "#ff69b4" },
             { name: "برتقالي مضيء", color: "#ff8c00" },
+            { name: "أحمر مضيء", color: "#ff4500" },
+            { name: "وردي مضيء", color: "#ff69b4" },
             { name: "أرجواني مضيء", color: "#8a2be2" },
-            { name: "سماوي مضيء", color: "#87ceeb" }
+            { name: "أزرق مضيء", color: "#1e90ff" },
+            { name: "سماوي مضيء", color: "#87ceeb" },
+            { name: "أسود مضيء", color: "#000000" }
         ];
         
         // إنشاء خيارات الألوان
@@ -814,12 +841,6 @@
                 sparkle.style.background = selectedColor.color;
                 sparkle.style.boxShadow = `0 0 5px 1px ${selectedColor.color}`;
             });
-            
-            // تحديث لون الجسيمات
-            const particleElements = document.querySelectorAll('.particle');
-            particleElements.forEach(particle => {
-                particle.style.backgroundColor = selectedColor.color;
-            });
         }
         
         // استخراج الألوان من التدرج
@@ -850,6 +871,20 @@
                 [42, 100, 255],
                 [138, 43, 226]
             ];
+        }
+        
+        // التحكم في الشرارات
+        function toggleSparkles() {
+            if (sparklesToggle.classList.contains('active')) {
+                // إخفاء الشرارات
+                sparklesContainer.style.display = 'none';
+                sparklesToggle.classList.remove('active');
+            } else {
+                // إظهار الشرارات وإنشاؤها
+                sparklesContainer.style.display = 'block';
+                createSparkles();
+                sparklesToggle.classList.add('active');
+            }
         }
         
         // أحداث النقر على خيارات الألوان
@@ -896,6 +931,9 @@
                 colorMenu.classList.remove('active');
             }
         });
+        
+        // التحكم في الشرارات
+        sparklesToggle.addEventListener('click', toggleSparkles);
         
         // تهيئة القائمة
         createColorOptions();
