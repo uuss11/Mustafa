@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الموقع الشخصي | مصطفى</title>
     
-    <!-- Google Fonts: Cairo & Tajawal -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- Typed.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js" defer></script>
 
     <style>
@@ -27,8 +24,8 @@
             --color-grey: #a0a0c0;
             --color-shadow: rgba(42, 100, 255, 0.2);
             --font-family-main: 'Tajawal', 'Cairo', sans-serif;
-            --transition-speed-fast: 0.2s;
-            --transition-speed-slow: 0.5s;
+            --transition-speed-fast: 0.3s;
+            --transition-speed-slow: 0.6s;
         }
 
         * {
@@ -78,17 +75,10 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100vw) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(100vw) rotate(360deg); opacity: 0; }
         }
 
-        /* تأثير الشرارات المتصاعدة */
         .sparkles {
             position: fixed;
             top: 0;
@@ -111,25 +101,13 @@
             box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.8);
         }
 
-        .sparkle.fast {
-            animation-duration: 3s;
-        }
+        .sparkle.fast { animation-duration: 3s; }
 
         @keyframes sparkle-rise {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
 
         .ripple {
@@ -142,27 +120,31 @@
         }
 
         @keyframes ripple-animation {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+            to { transform: scale(4); opacity: 0; }
         }
 
+        /* --- كارد الزجاج الأساسي --- */
         .vcard {
             width: 95%;
             max-width: 400px;
-            background: rgba(10, 31, 51, 0.85);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(42, 100, 255, 0.3);
-            border-radius: 20px;
+            /* تأثير زجاجي للكارد نفسه */
+            background: rgba(10, 31, 51, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            
+            border-radius: 25px;
             padding: 120px 25px 25px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             position: relative;
             transform-style: preserve-3d;
             transition: transform var(--transition-speed-slow) ease-out;
         }
 
+        /* تأثير الإضاءة المتحركة على الكارد */
         .vcard::before {
             content: '';
             position: absolute;
@@ -170,11 +152,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 20px;
+            border-radius: 25px;
             background: radial-gradient(
                 circle at var(--mouse-x) var(--mouse-y),
-                rgba(42, 100, 255, 0.15),
-                rgba(42, 100, 255, 0) 25%
+                rgba(255, 255, 255, 0.1),
+                transparent 40%
             );
             opacity: 0;
             transition: opacity var(--transition-speed-slow) ease;
@@ -182,9 +164,7 @@
             pointer-events: none;
         }
 
-        .vcard:hover::before {
-            opacity: 1;
-        }
+        .vcard:hover::before { opacity: 1; }
 
         .profile-picture-wrapper {
             width: 130px;
@@ -192,15 +172,17 @@
             margin: -90px auto 20px;
             border-radius: 50%;
             padding: 5px;
-            background: linear-gradient(45deg, var(--color-light-purple), var(--color-mid-blue));
-            box-shadow: 0 8px 25px var(--color-shadow);
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             position: relative;
             z-index: 3;
             transition: transform var(--transition-speed-slow) ease;
         }
         
         .vcard:hover .profile-picture-wrapper {
-            transform: scale(1.05) rotate(5deg);
+            transform: scale(1.05) translateY(-5px);
         }
 
         .profile-picture {
@@ -208,7 +190,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            border: 3px solid var(--color-dark-blue);
+            border: 3px solid rgba(255,255,255,0.1);
         }
 
         .user-info {
@@ -222,9 +204,7 @@
             font-weight: 900;
             color: var(--color-white);
             margin-bottom: 10px;
-            background: linear-gradient(to right, var(--color-accent), var(--color-white));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .user-info .title {
@@ -233,14 +213,12 @@
             min-height: 60px;
             font-weight: 700;
             line-height: 1.5;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        .user-info .title .typed-cursor {
-            color: var(--color-accent);
-        }
-
+        /* --- أيقونات التواصل الاجتماعي (Liquid Glass Bubbles) --- */
         .social-links {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -252,27 +230,64 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(42, 100, 255, 0.15);
-            color: var(--color-accent);
-            font-size: 1.3rem;
-            transition: all var(--transition-speed-fast) ease;
-            border: 1px solid rgba(42, 100, 255, 0.4);
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s ease-in-out;
+
+            /* Liquid Glass Effect */
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                inset 0 0 15px rgba(255, 255, 255, 0.05), /* لمعان داخلي */
+                0 5px 10px rgba(0,0,0,0.2), /* ظل خارجي */
+                0 0 0 1px rgba(255, 255, 255, 0.1); /* حدود دقيقة */
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.4); /* لمعان علوي */
+            border-left: 1px solid rgba(255, 255, 255, 0.4); /* لمعان جانبي */
+        }
+
+        /* تأثير السائل المتموج عند الهوفر للأيقونات */
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.4s;
+            transform: skewX(-20deg);
+        }
+
+        .social-links a:hover::before {
+            left: 100%;
         }
 
         .social-links a:hover {
-            color: var(--color-white);
-            background: var(--color-light-purple);
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 5px 15px var(--color-shadow);
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 15px 25px rgba(0,0,0,0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
         }
 
+        /* ألوان خاصة عند الهوفر */
+        .social-links a:hover i.fa-telegram { color: #0088cc; filter: drop-shadow(0 0 8px #0088cc); }
+        .social-links a:hover i.fa-tiktok { color: #ff0050; filter: drop-shadow(0 0 8px #ff0050); }
+        .social-links a:hover i.fa-youtube { color: #ff0000; filter: drop-shadow(0 0 8px #ff0000); }
+
+        /* --- الأزرار (Liquid Glass Bars) --- */
         .action-buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             position: relative;
             z-index: 3;
         }
@@ -284,88 +299,96 @@
             gap: 10px;
             text-decoration: none;
             color: var(--color-white);
-            background-color: rgba(42, 100, 255, 0.15);
-            padding: 14px;
-            border-radius: 10px;
+            padding: 16px;
+            border-radius: 15px;
             font-weight: 700;
-            font-size: 0.9rem;
-            transition: all var(--transition-speed-fast) ease;
-            border: 1px solid rgba(42, 100, 255, 0.4);
+            font-size: 1rem;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
+
+            /* Liquid Glass Effect Style */
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.02),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.3); /* Top Highlight */
+            border-left: 1px solid rgba(255, 255, 255, 0.3); /* Side Highlight */
         }
 
-        .action-btn::before {
+        /* تأثير حركة السائل للأزرار */
+        .action-btn::after {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: -120%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: var(--transition-speed-slow);
+            background: linear-gradient(
+                90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                transparent 100%
+            );
+            transform: skewX(-20deg);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .action-btn:hover::before {
-            left: 100%;
+        .action-btn:hover::after {
+            left: 120%;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .action-btn:hover {
-            transform: translateY(-2px);
-            border-color: var(--color-light-purple);
-            background: rgba(42, 100, 255, 0.25);
+            transform: translateY(-3px) scale(1.02);
+            background: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
+        /* تخصيص الزر الرئيسي ليكون زجاج ملون */
         .action-btn.primary {
-            background-color: var(--color-light-purple);
-            color: var(--color-white);
+            background: rgba(138, 43, 226, 0.15); /* بنفسجي شفاف */
+            box-shadow: 
+                inset 0 0 20px rgba(138, 43, 226, 0.2),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: rgba(138, 43, 226, 0.3);
+            border-top: 1px solid rgba(200, 150, 255, 0.5);
         }
         
         .action-btn.primary:hover {
-            background-color: var(--color-mid-blue);
+            background: rgba(138, 43, 226, 0.3);
+            box-shadow: 
+                0 0 20px rgba(138, 43, 226, 0.4),
+                inset 0 0 20px rgba(138, 43, 226, 0.3);
         }
 
         .action-btn i {
             transition: transform var(--transition-speed-fast) ease;
+            font-size: 1.2rem;
         }
         
         .action-btn:hover i {
-            transform: scale(1.2);
+            transform: scale(1.2) rotate(5deg);
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
         }
 
         .signature {
-            margin-top: 15px;
+            margin-top: 25px;
             font-size: 0.75rem;
-            color: var(--color-grey);
-            opacity: 0.7;
+            color: rgba(255, 255, 255, 0.6);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* تحسينات للشاشات الصغيرة جداً */
         @media (max-width: 350px) {
-            .vcard {
-                padding: 110px 15px 20px;
-            }
-            
-            .profile-picture-wrapper {
-                width: 110px;
-                height: 110px;
-                margin: -80px auto 15px;
-            }
-            
-            .user-info .name {
-                font-size: 1.5rem;
-            }
-            
-            .user-info .title {
-                font-size: 0.9rem;
-                min-height: 70px;
-            }
-            
-            .social-links a {
-                width: 40px;
-                height: 40px;
-                font-size: 1.1rem;
-            }
+            .vcard { padding: 110px 15px 20px; }
+            .profile-picture-wrapper { width: 110px; height: 110px; margin: -80px auto 15px; }
         }
     </style>
 </head>
@@ -375,7 +398,6 @@
     
     <div class="particles" id="particles"></div>
     
-    <!-- طبقة الشرارات المتصاعدة -->
     <div class="sparkles" id="sparkles"></div>
 
     <main>
@@ -417,8 +439,8 @@
             </footer>
             
             <div class="signature">
-                جميع الحقوق محفوظة | مصطفى ©2025
-                مصمم بكل حب، مـن رضا الى مصطفى 
+                جميع الحقوق محفوظة | مصطفى ©2025<br>
+                مصمم بكل حب، مـن رضا الى مصطفى<br>
                 Telegram: @lJJ2l
             </div>
         </section>
@@ -468,11 +490,7 @@
             ripple.style.left = e.clientX - rect.left - size/2 + 'px';
             ripple.style.top = e.clientY - rect.top - size/2 + 'px';
             
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-            
-            // تسريع الشرارات عند النقر
+            setTimeout(() => { ripple.remove(); }, 600);
             speedUpSparkles();
         });
 
@@ -504,24 +522,15 @@
         // --- Create floating particles ---
         const particlesContainer = document.getElementById('particles');
         if (particlesContainer) {
-            const particleCount = 25;
-            
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 25; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
-                
-                // Random size between 3px and 8px
                 const size = Math.random() * 5 + 3;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
-                
-                // Random position
                 particle.style.left = `${Math.random() * 100}vw`;
                 particle.style.top = `${Math.random() * 100}vh`;
-                
-                // Random animation delay
                 particle.style.animationDelay = `${Math.random() * 15}s`;
-                
                 particlesContainer.appendChild(particle);
             }
         }
@@ -531,39 +540,23 @@
         let sparkles = [];
         
         function createSparkles() {
-            const sparkleCount = 15;
-            
-            for (let i = 0; i < sparkleCount; i++) {
+            for (let i = 0; i < 15; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.classList.add('sparkle');
-                
-                // Random horizontal position
                 sparkle.style.left = `${Math.random() * 100}vw`;
-                
-                // Random delay
                 sparkle.style.animationDelay = `${Math.random() * 8}s`;
-                
-                // Random size variation
                 const size = Math.random() * 2 + 1;
                 sparkle.style.width = `${size}px`;
                 sparkle.style.height = `${size * 5}px`;
-                
                 sparklesContainer.appendChild(sparkle);
                 sparkles.push(sparkle);
             }
         }
         
         function speedUpSparkles() {
-            // جعل جميع الشرارات سريعة
-            sparkles.forEach(sparkle => {
-                sparkle.classList.add('fast');
-            });
-            
-            // العودة إلى السرعة الطبيعية بعد 3 ثوانٍ
+            sparkles.forEach(sparkle => { sparkle.classList.add('fast'); });
             setTimeout(() => {
-                sparkles.forEach(sparkle => {
-                    sparkle.classList.remove('fast');
-                });
+                sparkles.forEach(sparkle => { sparkle.classList.remove('fast'); });
             }, 3000);
         }
         
@@ -590,25 +583,20 @@
                 this.colorIndices[1] = (this.colorIndices[0] + Math.floor(1 + Math.random() * (this.colors.length - 1))) % this.colors.length;
                 this.colorIndices[3] = (this.colorIndices[2] + Math.floor(1 + Math.random() * (this.colors.length - 1))) % this.colors.length;
             }
-
             this.step += this.gradientSpeed;
             const t = this.step;
-
             const color1 = this.colors[this.colorIndices[0]];
             const color2 = this.colors[this.colorIndices[1]];
             const color3 = this.colors[this.colorIndices[2]];
             const color4 = this.colors[this.colorIndices[3]];
-
             const r1 = Math.round(color1[0] * (1 - t) + color2[0] * t);
             const g1 = Math.round(color1[1] * (1 - t) + color2[1] * t);
             const b1 = Math.round(color1[2] * (1 - t) + color2[2] * t);
             const c1 = `rgb(${r1}, ${g1}, ${b1})`;
-
             const r2 = Math.round(color3[0] * (1 - t) + color4[0] * t);
             const g2 = Math.round(color3[1] * (1 - t) + color4[1] * t);
             const b2 = Math.round(color3[2] * (1 - t) + color4[2] * t);
             const c2 = `rgb(${r2}, ${g2}, ${b2})`;
-
             return [c1, c2];
         };
 
