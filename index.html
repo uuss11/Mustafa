@@ -26,7 +26,7 @@
             box-sizing: border-box;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            cursor: none; /* إخفاء الماوس الافتراضي لاستخدام الكريستالي */
+            cursor: none;
         }
 
         body {
@@ -38,31 +38,66 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* منع التمرير للصفحة الرئيسية */
+            overflow: hidden;
             position: relative;
         }
 
         #gradient-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10;
+        }
+
+        /* --- Sparkles (Updated Style) --- */
+        .sparkles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -5;
+            display: none;
+        }
+        .sparkles.active { display: block; }
+
+        .sparkle {
+            position: absolute;
+            background: white;
+            border-radius: 50%; /* دائري لشرار واقعي */
+            bottom: -10px;
+            opacity: 0;
+            /* الحركة ستكون مزيج بين الصعود والتموج */
+            animation: rise 4s ease-in infinite;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(20px) scale(0.2); /* يتلاشى ويصغر */
+                opacity: 0;
+            }
         }
 
         /* --- Custom Cursor --- */
         .cursor-dot, .cursor-outline {
             position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
             border-radius: 50%; z-index: 9999; pointer-events: none;
+            transition: opacity 0.5s ease, width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
         }
+        .cursor-hidden { opacity: 0 !important; }
         .cursor-dot { width: 8px; height: 8px; background-color: white; box-shadow: 0 0 10px white; }
         .cursor-outline {
             width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.5);
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(2px);
-            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
         }
         body.hovering .cursor-outline {
             width: 60px; height: 60px; background: rgba(168, 216, 240, 0.15);
             border-color: var(--color-accent); box-shadow: 0 0 20px rgba(168, 216, 240, 0.3);
         }
 
-        /* --- Liquid Glass Class --- */
+        /* --- Liquid Glass --- */
         .liquid-glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -74,65 +109,49 @@
         }
         .liquid-glass:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.15); }
 
-        /* --- Header Elements (Top Bar) --- */
+        /* --- Header --- */
         .header-controls {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
-            padding: 20px;
+            position: fixed; top: 0; left: 0; width: 100%; padding: 20px;
             display: flex; justify-content: space-between; align-items: flex-start;
-            z-index: 1000; /* فوق كل شيء */
-            pointer-events: none; /* للسماح بالنقر تحته في المناطق الفارغة */
+            z-index: 1000; pointer-events: none;
         }
-
-        /* Weather Widget (Top Left) */
         .weather-widget {
-            pointer-events: auto;
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-            padding: 10px 15px; border-radius: 16px;
-            min-width: 90px;
+            pointer-events: auto; display: flex; flex-direction: column; align-items: center; gap: 5px;
+            padding: 10px 15px; border-radius: 16px; min-width: 90px;
         }
         .weather-icons { display: flex; align-items: center; gap: 8px; font-size: 1.3rem; }
         .main-icon { color: #FFD700; filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)); }
         .sub-icon { font-size: 0.9rem; color: #fff; opacity: 0.8; }
         .time-text { font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; direction: ltr;}
-
-        /* Menu Button (Top Right) */
         .menu-toggle {
-            pointer-events: auto;
-            width: 45px; height: 45px;
+            pointer-events: auto; width: 45px; height: 45px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
             border-radius: 12px; cursor: pointer;
         }
         .menu-toggle span { width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: 0.3s; }
         .menu-toggle:hover span { background: var(--color-accent); box-shadow: 0 0 10px var(--color-accent); }
 
-        /* --- Main Card --- */
+        /* --- Card --- */
         .vcard {
             width: 90%; max-width: 380px;
-            padding: 100px 20px 30px; /* مسافة علوية للصورة */
-            border-radius: 30px; text-align: center;
-            position: relative; z-index: 10;
-            margin-top: 0; /* سنضبطه في الموبايل */
+            padding: 100px 20px 30px; border-radius: 30px; text-align: center;
+            position: relative; z-index: 10; margin-top: 0;
         }
-
         .profile-picture-wrapper {
-            width: 130px; height: 130px; margin: -90px auto 15px; /* يرفع الصورة للأعلى */
+            width: 130px; height: 130px; margin: -90px auto 15px;
             border-radius: 50%; padding: 5px;
             background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             position: relative; z-index: 20;
         }
         .profile-picture { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid rgba(255,255,255,0.1); }
-
         .user-info .name { font-size: 1.6rem; font-weight: 900; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .user-info .title { font-size: 0.95rem; color: var(--color-accent); min-height: 45px; font-weight: 700; line-height: 1.4; }
-
         .social-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
         .social-links a {
             width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
             border-radius: 50%; font-size: 1.3rem; color: #fff; text-decoration: none;
         }
-
         .action-buttons { display: flex; flex-direction: column; gap: 12px; }
         .action-btn {
             display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -141,7 +160,6 @@
         }
         .action-btn.primary { background: rgba(138, 43, 226, 0.25); border-color: rgba(138, 43, 226, 0.4); }
         .action-btn.primary:hover { background: rgba(138, 43, 226, 0.5); }
-
         .signature { margin-top: 20px; font-size: 0.7rem; opacity: 0.6; }
 
         /* --- Sidebar --- */
@@ -155,8 +173,6 @@
         .sidebar.active { right: 0; }
         .sidebar-section { margin-bottom: 25px; }
         .section-title { font-size: 1rem; color: var(--color-accent); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
-        
-        /* Color Cards */
         .color-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .color-card {
             display: flex; align-items: center; padding: 8px; background: rgba(255,255,255,0.05);
@@ -165,8 +181,6 @@
         .color-card.active { border-color: var(--color-accent); background: rgba(255,255,255,0.15); }
         .preview-box { width: 20px; height: 20px; border-radius: 4px; margin-left: 8px; flex-shrink: 0; }
         .color-info { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        /* Toggle */
         .toggle-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; }
         .toggle-switch { position: relative; width: 40px; height: 22px; background: rgba(255,255,255,0.2); border-radius: 20px; cursor: pointer; transition: 0.3s; }
         .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: 0.3s; }
@@ -190,30 +204,14 @@
         .qr-image { width: 180px; height: 180px; border-radius: 10px; border: 4px solid rgba(255,255,255,0.8); margin-bottom: 15px; }
         .close-qr { padding: 8px 20px; background: rgba(255,255,255,0.25); border: none; color: #fff; border-radius: 20px; cursor: pointer; font-weight: bold; }
 
-        /* Sparkles */
-        .sparkles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; display: none; }
-        .sparkles.active { display: block; }
-        .sparkle { position: absolute; width: 3px; height: 10px; border-radius: 50%; opacity: 0; animation: rise 8s linear infinite; }
-        @keyframes rise { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0; } }
-
-        /* --- Mobile Optimization Fixes (لتصليح التداخل) --- */
         @media (max-width: 480px) {
             :root { --sidebar-width: 85%; }
-            
             .header-controls { padding: 15px; }
-            
             .menu-toggle { width: 40px; height: 40px; }
             .weather-widget { padding: 8px 12px; min-width: auto; }
             .weather-icons { font-size: 1.1rem; }
             .time-text { font-size: 0.8rem; }
-
-            /* إزاحة الكارد للأسفل لضمان عدم تداخله مع الأزرار */
-            .vcard {
-                margin-top: 60px; 
-                width: 88%;
-                padding: 90px 15px 25px;
-            }
-            
+            .vcard { margin-top: 60px; width: 88%; padding: 90px 15px 25px; }
             .profile-picture-wrapper { width: 110px; height: 110px; margin: -80px auto 15px; }
             .user-info .name { font-size: 1.5rem; }
             .action-btn { padding: 12px; font-size: 0.95rem; }
@@ -313,33 +311,45 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         
-        // --- Audio Setup ---
+        // --- Audio ---
         const hoverSound = new Audio('hover.mp3');
         const clickSound = new Audio('click.mp3');
         const playSound = (sound) => { if(sound) { sound.currentTime=0; sound.play().catch(()=>{}); }};
-
         document.querySelectorAll('.sound-hover').forEach(el => {
             el.addEventListener('mouseenter', () => playSound(hoverSound));
             el.addEventListener('click', () => playSound(clickSound));
         });
 
-        // --- Custom Cursor ---
+        // --- Advanced Cursor Logic (Auto Hide + Touch) ---
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
-        window.addEventListener('mousemove', (e) => {
-            cursorDot.style.left = `${e.clientX}px`;
-            cursorDot.style.top = `${e.clientY}px`;
-            cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
-        });
+        let cursorTimeout;
+
+        const moveCursor = (x, y) => {
+            cursorDot.classList.remove('cursor-hidden');
+            cursorOutline.classList.remove('cursor-hidden');
+            cursorDot.style.left = `${x}px`;
+            cursorDot.style.top = `${y}px`;
+            cursorOutline.animate({ left: `${x}px`, top: `${y}px` }, { duration: 500, fill: "forwards" });
+            clearTimeout(cursorTimeout);
+            cursorTimeout = setTimeout(() => {
+                cursorDot.classList.add('cursor-hidden');
+                cursorOutline.classList.add('cursor-hidden');
+            }, 3000);
+        };
+
+        window.addEventListener('mousemove', (e) => moveCursor(e.clientX, e.clientY));
+        window.addEventListener('touchmove', (e) => { const touch = e.touches[0]; moveCursor(touch.clientX, touch.clientY); });
+        window.addEventListener('touchstart', (e) => { const touch = e.touches[0]; moveCursor(touch.clientX, touch.clientY); });
+
         document.querySelectorAll('a, button, .liquid-glass').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        // --- Weather Widget Logic ---
+        // --- Weather & Time ---
         const timeText = document.getElementById('timeText');
         const weatherIcon = document.getElementById('mainWeatherIcon');
-        
         function updateTime() {
             const now = new Date();
             let hours = now.getHours();
@@ -347,22 +357,19 @@
             const ampm = hours >= 12 ? 'PM' : 'AM';
             const displayHours = hours % 12 || 12;
             timeText.textContent = `${displayHours}:${minutes} ${ampm}`;
-
-            // Change icon based on time
             if (hours >= 6 && hours < 18) {
-                weatherIcon.className = 'fas fa-sun main-icon';
-                weatherIcon.style.color = '#FFD700';
+                weatherIcon.className = 'fas fa-sun main-icon'; weatherIcon.style.color = '#FFD700';
             } else {
-                weatherIcon.className = 'fas fa-moon main-icon';
-                weatherIcon.style.color = '#FEFCD7';
+                weatherIcon.className = 'fas fa-moon main-icon'; weatherIcon.style.color = '#FEFCD7';
             }
         }
-        setInterval(updateTime, 1000);
-        updateTime();
+        setInterval(updateTime, 1000); updateTime();
 
-        // --- Configuration ---
+        // --- Themes Configuration ---
         const themes = [
             { name: "الوضع الليلي", css: "linear-gradient(135deg, #0a1f33, #8a2be2)", colors: [[10,31,51], [138,43,226], [26,63,117], [42,100,255]] },
+            { name: "بزوغ الفجر", css: "linear-gradient(135deg, #0f2027, #203a43, #2c5364, #cc2b5e)", colors: [[15,32,39], [44,83,100], [204,43,94], [117,58,136]] },
+            { name: "الجمر الأسود", css: "linear-gradient(135deg, #000000, #1a0b00, #e65100)", colors: [[0,0,0], [26,11,0], [230,81,0], [50,10,0]] },
             { name: "غروب الشمس", css: "linear-gradient(135deg, #ff512f, #dd2476)", colors: [[255,81,47], [221,36,118], [255,160,0], [100,20,50]] },
             { name: "طبيعة خلابة", css: "linear-gradient(135deg, #11998e, #38ef7d)", colors: [[17,153,142], [56,239,125], [0,100,0], [20,50,20]] },
             { name: "أعماق المحيط", css: "linear-gradient(135deg, #00c6ff, #0072ff)", colors: [[0,198,255], [0,114,255], [0,10,50], [0,100,200]] },
@@ -371,9 +378,7 @@
             { name: "أناقة الأسود", css: "linear-gradient(135deg, #434343, #000000)", colors: [[67,67,67], [0,0,0], [100,100,100], [20,20,20]] },
             { name: "ذهبي ملكي", css: "linear-gradient(135deg, #CAC531, #F3F9A7)", colors: [[202,197,49], [243,249,167], [218,165,32], [255,215,0]] },
             { name: "نار وجليد", css: "linear-gradient(135deg, #3a6186, #89253e)", colors: [[58,97,134], [137,37,62], [0,0,100], [100,0,0]] },
-            { name: "حلوى التوت", css: "linear-gradient(135deg, #DA4453, #89216B)", colors: [[218,68,83], [137,33,107], [255,100,150], [100,0,50]] },
-            { name: "غابة مظلمة", css: "linear-gradient(135deg, #134E5E, #71B280)", colors: [[19,78,94], [113,178,128], [0,50,0], [50,100,50]] },
-            { name: "سايبر بانك", css: "linear-gradient(135deg, #f12711, #f5af19)", colors: [[241,39,17], [245,175,25], [255,0,100], [255,200,0]] }
+            { name: "حلوى التوت", css: "linear-gradient(135deg, #DA4453, #89216B)", colors: [[218,68,83], [137,33,107], [255,100,150], [100,0,50]] }
         ];
 
         const sparklesData = [
@@ -453,7 +458,7 @@
         }
         drawGradient();
 
-        // --- Sparkles Logic ---
+        // --- Sparkles Logic (Updated) ---
         const sparklesContainer = document.getElementById('sparkles');
         const sparklesToggle = document.getElementById('sparklesToggle');
         let sparkleInterval;
@@ -461,17 +466,26 @@
 
         function createSparkle() {
             const s = document.createElement('div'); s.className = 'sparkle';
-            s.style.left = Math.random()*100+'vw'; s.style.background = currentSparkleColor;
+            s.style.left = Math.random()*100+'vw'; 
+            s.style.background = currentSparkleColor;
+            // شكل عشوائي (صغير)
+            const size = Math.random() * 3 + 2; // بين 2px و 5px
+            s.style.width = `${size}px`;
+            s.style.height = `${size}px`;
+            
             s.style.boxShadow = currentSparkleColor==='#000000' ? `0 0 8px rgba(0,0,0,0.8), 0 0 2px rgba(255,255,255,0.2)` : `0 0 8px ${currentSparkleColor}`;
-            s.style.animationDuration = (Math.random()*3+2)+'s';
-            sparklesContainer.appendChild(s); setTimeout(() => s.remove(), 5000);
+            const duration = Math.random() * 3 + 3; 
+            s.style.animationDuration = duration + 's';
+            
+            sparklesContainer.appendChild(s); 
+            setTimeout(() => s.remove(), duration * 1000);
         }
 
         sparklesToggle.onclick = () => {
             sparklesToggle.classList.toggle('active');
             if(sparklesToggle.classList.contains('active')) {
                 sparklesContainer.classList.add('active');
-                sparkleInterval = setInterval(createSparkle, 150);
+                sparkleInterval = setInterval(createSparkle, 100); 
             } else {
                 sparklesContainer.classList.remove('active');
                 clearInterval(sparkleInterval);
@@ -500,4 +514,4 @@
     });
     </script>
 </body>
-</html>
+    </html>
