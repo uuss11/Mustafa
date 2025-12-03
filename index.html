@@ -162,6 +162,119 @@
         .action-btn.primary:hover { background: rgba(138, 43, 226, 0.5); }
         .signature { margin-top: 20px; font-size: 0.7rem; opacity: 0.6; }
 
+        /* --- Store Section --- */
+        .store-section {
+            width: 90%;
+            max-width: 800px; /* Wider than vcard */
+            padding: 30px 20px;
+            border-radius: 30px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin-top: 60px;
+            display: none; /* Hidden by default */
+        }
+
+        .store-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .store-header h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--color-white);
+        }
+
+        .store-header .action-btn {
+            padding: 10px 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        /* Custom scrollbar for products grid */
+        .products-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        .products-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .products-grid::-webkit-scrollbar-thumb {
+            background: rgba(168, 216, 240, 0.5);
+            border-radius: 10px;
+        }
+        .products-grid::-webkit-scrollbar-thumb:hover {
+            background: var(--color-accent);
+        }
+
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: right;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 12px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--color-white);
+        }
+
+        .product-price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--color-accent);
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            background: rgba(138, 43, 226, 0.25);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            text-align: center;
+        }
+
+        .buy-btn:hover {
+            background: rgba(138, 43, 226, 0.5);
+        }
+
         /* --- Sidebar --- */
         .sidebar {
             position: fixed; top: 0; right: -100%; width: var(--sidebar-width); height: 100%;
@@ -300,16 +413,98 @@
                 <button class="action-btn liquid-glass sound-hover" id="shareBtn">
                     <i class="fas fa-share-alt"></i> <span>مشاركة الملف (QR)</span>
                 </button>
+                <button class="action-btn liquid-glass sound-hover" id="showStoreBtn">
+                    <i class="fas fa-store"></i> <span>المتجر الرقمي</span>
+                </button>
             </footer>
             
             <div class="signature">
                 جميع الحقوق محفوظة | مصطفى ©2025
             </div>
         </section>
+
+        <section class="store-section liquid-glass" id="store">
+            <header class="store-header">
+                <h2>المنتجات الرقمية</h2>
+                <button class="action-btn liquid-glass sound-hover" id="showVCardBtn">
+                    <i class="fas fa-arrow-left"></i> <span>العودة</span>
+                </button>
+            </header>
+            <div class="products-grid" id="productsGrid">
+                <!-- Product cards will be inserted here by JavaScript -->
+            </div>
+        </section>
     </main>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+        // --- Products Data ---
+        // هنا يمكنك إضافة أو تعديل منتجاتك
+        const products = [
+            {
+                id: 1,
+                name: "My shakes",
+                description: "",
+                price: "100⭐",
+                imageUrl: "https://files.catbox.moe/8aj1ga.jpg",
+                productUrl: "https://t.me/V404E/8"
+            },
+            {
+                id: 2,
+                name: "Gojo edit",
+                description: "",
+                price: "100⭐",
+                imageUrl: "https://files.catbox.moe/4yz3n0.jpg",
+                productUrl: "https://t.me/V404E/12"
+            },
+            {
+                id: 3,
+                name: "GOKU edit",
+                description: "",
+                price: "100⭐",
+                imageUrl: "https://files.catbox.moe/jpgkr4.jpg",
+                productUrl: "https://t.me/V404E/14"
+            }
+        ];
+
+        // --- Store Logic ---
+        const vcardSection = document.getElementById('vcard');
+        const storeSection = document.getElementById('store');
+        const showStoreBtn = document.getElementById('showStoreBtn');
+        const showVCardBtn = document.getElementById('showVCardBtn');
+        const productsGrid = document.getElementById('productsGrid');
+
+        function renderProducts() {
+            productsGrid.innerHTML = ''; // Clear existing products
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card liquid-glass';
+                productCard.innerHTML = `
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                    <h4 class="product-name">${product.name}</h4>
+                    <p class="product-price">${product.price}</p>
+                    <a href="${product.productUrl}" target="_blank" class="buy-btn sound-hover">
+                        <i class="fas fa-shopping-cart"></i> <span>شراء الآن</span>
+                    </a>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        showStoreBtn.addEventListener('click', () => {
+            vcardSection.style.display = 'none';
+            storeSection.style.display = 'block';
+            renderProducts();
+            playSound(clickSound);
+        });
+
+        showVCardBtn.addEventListener('click', () => {
+            storeSection.style.display = 'none';
+            vcardSection.style.display = 'block';
+            playSound(clickSound);
+        });
+
         
         // --- Audio ---
         const hoverSound = new Audio('hover.mp3');
